@@ -19,7 +19,7 @@ page = st.sidebar.radio(
     ["Home", "Theory", "Molecular Visualization", "Molecular Properties Report", "Assessment"]
 )
 
-# Example Molecules
+# Example Molecules Data
 EXAMPLES = {
     "Ethanol": "CCO",
     "Benzene": "c1ccccc1",
@@ -47,6 +47,24 @@ if page == "Home":
     - ✅ Select different molecular visualization styles
     - ✅ Calculate complete molecular properties
     - ✅ Download molecular reports
+    """)
+    
+    st.markdown("---")
+    st.header("Example Molecules")
+    
+    # Table for Example Molecules
+    examples_df = pd.DataFrame([
+        {"Molecule": name, "SMILES": smiles} for name, smiles in EXAMPLES.items()
+    ])
+    st.table(examples_df)
+    
+    st.markdown("---")
+    st.header("👨‍💻 Developed by")
+    st.markdown("""
+    **K. NITHISHKUMAR**  
+    *CYBER SECURITY STUDENT*  
+    *FIRST YEAR STUDENT*  
+    *SRM Institute of Science and Technology*
     """)
 
 elif page == "Molecular Visualization":
@@ -102,35 +120,3 @@ elif page == "Molecular Properties Report":
                 round(Descriptors.MolLogP(mol), 2),
                 Lipinski.NumHDonors(mol),
                 Lipinski.NumHAcceptors(mol),
-                round(Descriptors.TPSA(mol), 2),
-                Lipinski.NumRotatableBonds(mol)
-            ]
-        }
-        df = pd.DataFrame(props)
-        st.table(df)
-        
-        csv = df.to_csv(index=False).encode('utf-8')
-        st.download_button("Download Report (CSV)", csv, "molecular_properties.csv", "text/csv")
-
-elif page == "Theory":
-    st.header("📖 Theory & Concepts")
-    st.markdown("""
-    **SMILES (Simplified Molecular Input Line Entry System):** 
-    A line notation for specifying the structure of chemical species using short ASCII strings.
-    
-    **Lipinski's Rule of Five:**
-    - Molecular mass less than 500 daltons
-    - High lipophilicity (expressed as LogP less than 5)
-    - Less than 5 hydrogen bond donors
-    - Less than 10 hydrogen bond acceptors
-    """)
-
-elif page == "Assessment":
-    st.header("📝 Assessment")
-    st.write("Test your knowledge on SMILES notation:")
-    q1 = st.radio("What is the SMILES notation for Ethanol?", ["CCO", "c1ccccc1", "CC(=O)O"])
-    if st.button("Submit Answer"):
-        if q1 == "CCO":
-            st.success("Correct!")
-        else:
-            st.error("Try again!")
