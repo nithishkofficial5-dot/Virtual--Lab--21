@@ -20,8 +20,29 @@ if os.path.exists("logo.png"):
 st.sidebar.title("🧪 Virtual Lab")
 page = st.sidebar.radio(
     "Navigation",
-    ["Home", "Theory", "Molecular Visualization", "Molecular Properties Report", "Assessment"]
+    ["Home", "Theory", "Molecular Visualization", "Molecular Properties Report", "Assessment", "Final Project Report"]
 )
+
+st.sidebar.markdown("---")
+
+# Student Information Inputs in Sidebar
+st.sidebar.subheader("👨‍🎓 Student Information")
+student_name = st.sidebar.text_input("Student Name", placeholder="Enter your name")
+reg_number = st.sidebar.text_input("Registration Number", placeholder="Enter reg number")
+
+st.sidebar.markdown("---")
+
+# Learning Objectives Section in Sidebar
+st.sidebar.subheader("🎓 Learning Objectives")
+st.sidebar.markdown("""
+**Students can learn:**
+- SMILES notation
+- Molecular representation
+- 2D visualization
+- 3D visualization
+- Molecular descriptors
+- Structure-property relationships
+""")
 
 # Example Molecules Data
 EXAMPLES = {
@@ -34,7 +55,6 @@ EXAMPLES = {
 }
 
 if page == "Home":
-    # Logo at top of Home page
     if os.path.exists("logo.png"):
         st.image("logo.png", width=350)
         
@@ -46,6 +66,9 @@ if page == "Home":
     st.header("Welcome to the Virtual Laboratory")
     st.write("This interactive virtual laboratory helps students understand important concepts in cheminformatics and computational chemistry.")
     
+    if student_name or reg_number:
+        st.info(f"👤 **Current Student Session:** {student_name if student_name else 'N/A'} | **Reg No:** {reg_number if reg_number else 'N/A'}")
+
     st.subheader("What can students do?")
     st.markdown("""
     - ✅ Enter any SMILES notation
@@ -60,7 +83,6 @@ if page == "Home":
     st.markdown("---")
     st.header("Example Molecules")
     
-    # Table for Example Molecules
     examples_df = pd.DataFrame([
         {"Molecule": name, "SMILES": smiles} for name, smiles in EXAMPLES.items()
     ])
@@ -160,3 +182,31 @@ elif page == "Assessment":
             st.success("Correct!")
         else:
             st.error("Try again!")
+
+elif page == "Final Project Report":
+    st.header("📄 Final Project Report Generation")
+    st.write("Generate a personalized lab report based on your student details and analysis.")
+    
+    if student_name and reg_number:
+        st.success(f"Report ready for **{student_name}** (Reg No: **{reg_number}**)")
+        report_text = f"""
+=====================================================
+CHEMINFORMATICS VIRTUAL LABORATORY REPORT
+SRM Institute of Science and Technology, Tiruchirappalli
+=====================================================
+
+Student Name       : {student_name}
+Registration Number : {reg_number}
+Course             : Chemistry / Cheminformatics Lab
+
+Status: Laboratory Module Completed Successfully.
+        """
+        st.code(report_text, language="text")
+        st.download_button(
+            label="📥 Download Lab Report",
+            data=report_text,
+            file_name=f"Lab_Report_{reg_number}.txt",
+            mime="text/plain"
+        )
+    else:
+        st.warning("⚠️ Please enter your **Student Name** and **Registration Number** in the sidebar to generate the report.")
