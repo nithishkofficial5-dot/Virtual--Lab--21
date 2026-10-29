@@ -4,6 +4,7 @@ from rdkit.Chem import Draw, Descriptors, Lipinski, AllChem
 import py3Dmol
 import streamlit.components.v1 as components
 import pandas as pd
+import os
 
 # Page Configuration
 st.set_page_config(
@@ -12,7 +13,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# Sidebar Navigation
+# Sidebar Navigation & Logo
+if os.path.exists("logo.png"):
+    st.sidebar.image("logo.png", use_container_width=True)
+
 st.sidebar.title("🧪 Virtual Lab")
 page = st.sidebar.radio(
     "Navigation",
@@ -30,6 +34,10 @@ EXAMPLES = {
 }
 
 if page == "Home":
+    # Logo at top of Home page
+    if os.path.exists("logo.png"):
+        st.image("logo.png", width=350)
+        
     st.title("🧪 Cheminformatics Virtual Laboratory")
     st.subheader("SRM Institute of Science and Technology, Tiruchirappalli")
     st.caption("Faculty of Engineering and Technology | School of Sciences | Division of Chemistry")
